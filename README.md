@@ -37,3 +37,7 @@ A leitura do texto ARC é carregada sob demanda a partir do conjunto público de
 
 
 Atualização: o modo Desafio funciona em rodadas de 10 perguntas. Ao terminar uma rodada, a pessoa pode Concluir e voltar à área principal ou Continuar para uma nova rodada de 10 perguntas. A mensagem informa 10 perguntas por rodada, sem afirmar que o total preparado é 25.
+
+
+### Ilustração da tela inicial
+A tela inicial agora usa uma ilustração própria de uma Bíblia aberta azul com detalhes dourados, no lugar dos emojis de livro e estrela. O arquivo `icons/bible-welcome.png` faz parte do pacote e é incluído no cache do aplicativo.
