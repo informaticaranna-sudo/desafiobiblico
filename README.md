@@ -28,3 +28,9 @@ A leitura do texto ARC é carregada sob demanda a partir do conjunto público de
 - A instalação do PWA exige HTTPS; o GitHub Pages fornece HTTPS.
 - O texto bíblico sob demanda depende de internet e de um serviço externo; o conteúdo das perguntas fica no próprio pacote.
 - As questões com aviso **EM REVISÃO** devem ser conferidas com o professor antes de considerar seu gabarito definitivo.
+
+
+## Tela inicial e reinício do progresso
+- O aplicativo abre em uma tela inicial com nome/apelido, botão Entrar e opção para instalar.
+- Na área principal há os botões Sair e Reiniciar perguntas.
+- Reiniciar perguntas apaga o nome salvo, os acertos e o histórico de estudo deste aparelho, além do cache interno do aplicativo. O cache geral do navegador não é apagado.

@@ -26,6 +26,38 @@ function choose(o,button){if(answered)return;answered=true;[...$('options').chil
 function next(){if(!answered)return;if(current<round.length-1){current++;showQuestion()}else{$('questionText').textContent='Missão concluída! 🎉';$('options').innerHTML='';$('answerBox').classList.add('hidden');$('feedback').textContent='Parabéns por estudar a Palavra! Você pode jogar novamente.';$('nextBtn').disabled=true;$('progressBar').style.width='100%'}}
 function renderList(){const term=$('searchInput').value.toLocaleLowerCase('pt-BR').trim(),range=$('rangeSelect').value;const [min,max]=range==='all'?[1,1001]:range.split('-').map(Number);const filtered=questions.filter(q=>q.id>=min&&q.id<=max&&q.question.toLocaleLowerCase('pt-BR').includes(term));const shown=filtered;$('questionList').innerHTML='';shown.forEach(q=>{const b=document.createElement('button');b.className='item';const left=document.createElement('span');left.textContent=`#${q.id} — ${q.question}`;const right=document.createElement('b');right.textContent=q.reviewStatus==='rascunho_revisar'?'EM REVISÃO':'Estudar →';if(q.reviewStatus==='rascunho_revisar')right.style.color='#a05a12';b.append(left,right);b.addEventListener('click',()=>openSingle(q));$('questionList').appendChild(b)});$('listCount').textContent=`Exibindo ${shown.length} de ${filtered.length} resultado(s).`}
 function openSingle(q){$('studyPanel').classList.add('hidden');$('singlePanel').classList.remove('hidden');$('singleTitle').textContent=`Pergunta ${q.id}${q.reviewStatus==='rascunho_revisar'?' • EM REVISÃO':''}`;$('singleQuestion').textContent=q.question;$('singleFeedback').textContent=q.reviewStatus==='rascunho_revisar'?'⚠️ Esta pergunta está marcada para conferência com o professor.':'';$('singleFeedback').className='feedback '+(q.reviewStatus==='rascunho_revisar'?'bad':'');const area=$('singleAnswer');area.classList.remove('hidden');area.style.display='block';setReference(q.answer,'singleAnswerText','singleArcLink');$('singleVerseText').textContent='O texto do versículo será carregado quando a fonte bíblica estiver disponível. Você também pode abrir a passagem pelo botão abaixo.';loadVerseText(q.answer,$('singleVerseText'),$('singleArcLink')).catch(()=>{});const s=readStats();if(!s.seen.includes(q.id))s.seen.push(q.id);saveStats(s);updateStats();$('singlePanel').scrollIntoView({behavior:'smooth',block:'start'})}
-$('playerName').value=localStorage.getItem('desafioBiblicoPlayer')||'';$('playerName').addEventListener('change',()=>localStorage.setItem('desafioBiblicoPlayer',$('playerName').value.trim()));$('startBtn').addEventListener('click',()=>{localStorage.setItem('desafioBiblicoPlayer',$('playerName').value.trim());begin('challenge')});$('studyBtn').addEventListener('click',()=>{hidePanels();$('studyPanel').classList.remove('hidden');renderList();$('studyPanel').scrollIntoView({behavior:'smooth'})});$('nextBtn').addEventListener('click',next);$('exitBtn').addEventListener('click',()=>{hidePanels();$('home').scrollIntoView({behavior:'smooth'})});$('closeStudy').addEventListener('click',()=>$('studyPanel').classList.add('hidden'));$('backList').addEventListener('click',()=>{$('singlePanel').classList.add('hidden');$('studyPanel').classList.remove('hidden')});$('searchInput').addEventListener('input',renderList);$('rangeSelect').addEventListener('change',renderList);
+$('playerName').value=localStorage.getItem('desafioBiblicoPlayer')||'';
+function enterApp(){
+ const name=$('playerName').value.trim();
+ if(!name){$('playerName').focus();$('playerName').placeholder='Digite seu nome ou apelido para entrar';return}
+ localStorage.setItem('desafioBiblicoPlayer',name);
+ $('welcomeScreen').classList.add('hidden');$('appScreen').classList.remove('hidden');
+ hidePanels();$('home').classList.remove('hidden');$('howPanel').classList.remove('hidden');updateStats();window.scrollTo({top:0,behavior:'smooth'});
+}
+function exitToWelcome(){
+ hidePanels();$('home').classList.remove('hidden');$('howPanel').classList.remove('hidden');
+ $('appScreen').classList.add('hidden');$('welcomeScreen').classList.remove('hidden');
+ $('playerName').value=localStorage.getItem('desafioBiblicoPlayer')||'';window.scrollTo({top:0,behavior:'smooth'});
+}
+async function resetAppProgress(){
+ if(!confirm('Deseja reiniciar as perguntas? Seu total de acertos e o histórico de perguntas estudadas serão apagados deste aparelho.'))return;
+ localStorage.removeItem(statsKey);localStorage.removeItem('desafioBiblicoPlayer');
+ round=[];current=0;answered=false;mode='challenge';
+ try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('desafio-biblico')).map(k=>caches.delete(k)))}}catch(e){console.warn('Não foi possível limpar o cache do aplicativo:',e)}
+ $('playerName').value='';updateStats();hidePanels();$('home').classList.remove('hidden');$('howPanel').classList.remove('hidden');
+ alert('Tudo pronto! O progresso e o cache interno do aplicativo foram reiniciados. Entre novamente para começar do zero.');
+ exitToWelcome();
+}
+$('enterBtn').addEventListener('click',enterApp);
+$('playerName').addEventListener('keydown',e=>{if(e.key==='Enter')enterApp()});
+$('startBtn').addEventListener('click',()=>begin('challenge'));
+$('studyBtn').addEventListener('click',()=>{hidePanels();$('studyPanel').classList.remove('hidden');renderList();$('studyPanel').scrollIntoView({behavior:'smooth'})});
+$('nextBtn').addEventListener('click',next);
+$('exitBtn').addEventListener('click',exitToWelcome);
+$('appExitBtn').addEventListener('click',exitToWelcome);
+$('resetBtn').addEventListener('click',resetAppProgress);
+$('closeStudy').addEventListener('click',()=>$('studyPanel').classList.add('hidden'));
+$('backList').addEventListener('click',()=>{$('singlePanel').classList.add('hidden');$('studyPanel').classList.remove('hidden')});
+$('searchInput').addEventListener('input',renderList);$('rangeSelect').addEventListener('change',renderList);
 fetch('./perguntas.json').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{questions=data;$('totalCount').textContent=data.length.toLocaleString('pt-BR');updateStats()}).catch(()=>$('questionText').textContent='Não foi possível carregar as perguntas.');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installBtn').hidden=false});$('installBtn').addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('installBtn').hidden=true});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.error));
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});$('installBtn').addEventListener('click',async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}alert('Para instalar, abra o menu do navegador e escolha "Instalar aplicativo" ou "Adicionar à tela inicial". Se essa opção não aparecer, acesse o site pelo Chrome e verifique se está usando HTTPS.');});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.error));
