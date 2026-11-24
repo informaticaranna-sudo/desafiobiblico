@@ -41,3 +41,41 @@ Atualização: o modo Desafio funciona em rodadas de 10 perguntas. Ao terminar u
 
 ### Ilustração da tela inicial
 A tela inicial agora usa uma ilustração própria de uma Bíblia aberta azul com detalhes dourados, no lugar dos emojis de livro e estrela. O arquivo `icons/bible-welcome.png` faz parte do pacote e é incluído no cache do aplicativo.
+
+
+## Banco de perguntas — atualização v14
+
+- Total preservado: 1.001 registros.
+- Questões com alternativas aprovadas nesta versão: 59.
+- Questões antigas mantidas em revisão e fora do sorteio: 19.
+- Questão 496 permanece substituída/pendente, sem entrar no sorteio.
+- Registros sem três alternativas e sem aprovação explícita permanecem pendentes e não entram no sorteio.
+- O sorteio usa uma lista de permissão: somente `reviewStatus: "aprovada"`, com exatamente três alternativas e uma correta.
+
+Observação: o ZIP de origem não continha as alternativas dos lotes 26–800 e parte dos lotes posteriores, embora esses lotes tenham sido aprovados na conversa. Por segurança, esta versão não inventa nem ativa essas questões; elas permanecem fora do sorteio até que seus dados completos sejam incorporados.
+
+## Situação da reconstrução
+
+- 83 questões liberadas para o desafio.
+- 19 questões em revisão.
+- 898 aguardando alternativas.
+- Questão 496 com substituição pendente.
+
+
+## Atualização v16 — revisão autorizada pela usuária
+
+As questões 45, 99, 105, 189, 200, 252, 302, 304, 351, 352, 353, 359, 360, 365, 370, 496, 567, 605, 619 e 692 foram substituídas/reescritas com enunciados objetivos e referências corrigidas. Todas possuem três alternativas e um único gabarito.
+
+As questões ainda classificadas como `pendente_alternativas` permanecem fora do sorteio até que as alternativas sejam incorporadas.
+
+
+## Integração dos chats 4 e 5 — versão atualizada
+
+- As 898 perguntas que estavam aguardando alternativas foram liberadas no status do banco, conforme autorização da usuária.
+- **Limitação do pacote recebido:** essas 898 perguntas ainda estão sem as três alternativas porque os links compartilhados dos chats não puderam ser lidos nesta sessão; por isso, embora estejam liberadas para estudo, não entram no sorteio do desafio até que as alternativas sejam recuperadas ou preparadas.
+- A questão 496 foi substituída por uma questão sobre Natã e Davi (2 Samuel 12:1–7).
+- A questão 510 foi substituída por uma questão sobre a libertação de Pedro da prisão (Atos 12:7–10), evitando a contagem ambígua dos naufrágios de Paulo.
+- Foram revisadas as redações/alternativas dos itens 817, 823, 824, 833, 834, 882, 843, 861, 866 e 867.
+- A questão 6 já contém a redação corrigida solicitada sobre os homens lançados na fornalha.
+- A ilustração de Bíblia aberta já está na tela inicial (`icons/bible-welcome.png`); o botão de saída do desafio também já não aparece no código desta base.
+- Total de perguntas: 1.001. Todas estão com status `aprovada`; somente as que têm exatamente três alternativas e uma resposta correta são sorteadas no desafio.
