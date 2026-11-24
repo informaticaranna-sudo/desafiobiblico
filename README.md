@@ -7,7 +7,7 @@ Aplicativo web instalável (PWA), preparado para publicação gratuita no GitHub
 - Acervo com **1.001 perguntas** e suas referências bíblicas, preservadas a partir do PDF fornecido.
 - Área **Estudar perguntas**: todas as 1.001 questões podem ser abertas para leitura. A tela mostra a pergunta, a referência e o texto bíblico ARC, sem alternativas e sem fluxo de resposta.
 - Questões marcadas para conferência aparecem com o aviso **EM REVISÃO**.
-- Área **Começar desafio**: apresenta perguntas com três alternativas já preparadas. Nesta versão são 25 questões; as demais ficam disponíveis para estudo enquanto suas alternativas são preparadas e conferidas. Não foram inventadas alternativas para completar o jogo.
+- Área **Começar desafio**: apresenta perguntas com três alternativas já preparadas. O desafio funciona em rodadas de 10 perguntas. As demais ficam disponíveis para estudo enquanto suas alternativas são preparadas e conferidas. Não foram inventadas alternativas para completar o jogo.
 - Nome/apelido e progresso básico ficam salvos no próprio aparelho.
 
 ## Texto bíblico
@@ -34,3 +34,6 @@ A leitura do texto ARC é carregada sob demanda a partir do conjunto público de
 - O aplicativo abre em uma tela inicial com nome/apelido, botão Entrar e opção para instalar.
 - Na área principal há os botões Sair e Reiniciar perguntas.
 - Reiniciar perguntas apaga o nome salvo, os acertos e o histórico de estudo deste aparelho, além do cache interno do aplicativo. O cache geral do navegador não é apagado.
+
+
+Atualização: o modo Desafio funciona em rodadas de 10 perguntas. Ao terminar uma rodada, a pessoa pode Concluir e voltar à área principal ou Continuar para uma nova rodada de 10 perguntas. A mensagem informa 10 perguntas por rodada, sem afirmar que o total preparado é 25.

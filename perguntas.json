@@ -106,7 +106,7 @@
   },
   {
     "id": 6,
-    "question": "Quais são os 3 homens na Bíblia cujos chapéus se diz que foram aquecidos?",
+    "question": "Quais homens foram atados com as suas capas, e seus calções, e seus chapéus, e suas vestes e foram lançados dentro do forno de fogo ardente?",
     "answer": "Dan. 3:21",
     "options": [
       {
@@ -122,8 +122,7 @@
         "correct": false
       }
     ],
-    "correctAnswer": "Sadraque, Mesaque e Abede-Nego",
-    "reviewStatus": "rascunho_revisar"
+    "correctAnswer": "Sadraque, Mesaque e Abede-Nego"
   },
   {
     "id": 7,
