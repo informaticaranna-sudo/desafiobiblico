@@ -79,3 +79,43 @@ As questões ainda classificadas como `pendente_alternativas` permanecem fora do
 - A questão 6 já contém a redação corrigida solicitada sobre os homens lançados na fornalha.
 - A ilustração de Bíblia aberta já está na tela inicial (`icons/bible-welcome.png`); o botão de saída do desafio também já não aparece no código desta base.
 - Total de perguntas: 1.001. Todas estão com status `aprovada`; somente as que têm exatamente três alternativas e uma resposta correta são sorteadas no desafio.
+
+
+## Atualização da rodada e integração do chat 5
+
+As 10 questões substituídas/revisadas no lote do chat 5 estão incorporadas ao `perguntas.json`, todas aprovadas, com três alternativas e um único gabarito correto:
+817, 823, 824, 833, 834, 843, 861, 866, 867 e 882.
+
+Na missão de 10 perguntas:
+- Da 1ª à 9ª, aparece **Próxima pergunta**.
+- Na 10ª, **Concluir desafio** aparece somente depois de responder.
+- O cache do service worker foi atualizado para que a versão nova do aplicativo seja carregada.
+
+
+
+## Competição entre amigos (v17)
+
+O aplicativo inclui competição privada por convite: até 10 participantes, apelido sem conta, desafio por turnos e batalha ao vivo. No modo por turnos, cada pessoa responde no próprio horário. Na batalha ao vivo, todos recebem a mesma pergunta; o organizador avança quando todos responderem. Cada acerto vale 10 pontos.
+
+### Ativação do serviço online
+
+A competição entre aparelhos precisa de backend online. Esta versão usa Supabase e inclui `competition.sql` com tabelas e funções seguras. Para ativar:
+
+1. Crie um projeto gratuito em https://supabase.com/.
+2. Abra **SQL Editor**, cole todo o conteúdo de `competition.sql` e execute.
+3. Em **Project Settings → API**, copie a **Project URL** e a chave pública **anon/publishable**. Nunca use a chave `service_role` no aplicativo.
+4. Abra `supabase-config.js` e substitua os dois textos `COLE_...` pela URL e chave pública do projeto.
+5. Publique novamente todos os arquivos do diretório no mesmo endereço HTTPS onde o PWA está hospedado.
+6. Abra o app, entre com seu apelido e use **Competir com amigos**.
+
+Sem configurar o Supabase, o modo individual continua funcionando normalmente, mas as salas online não podem ser criadas ou sincronizadas. O código de convite funciona como chave de acesso: compartilhe apenas com os amigos convidados. O apelido não comprova identidade; qualquer pessoa com o convite pode tentar entrar.
+
+### Limites e proteção
+
+- Máximo de 10 participantes por sala (criador incluído).
+- Cada sala recebe as mesmas 10 perguntas já aprovadas, com três alternativas e uma correta.
+- As respostas são validadas no banco; a pontuação não depende do cálculo do navegador.
+- A chave individual da sala fica salva somente no aparelho do participante.
+- O placar atualiza automaticamente por consulta periódica ao servidor.
+- A batalha ao vivo é sincronizada por pergunta; o organizador libera a próxima depois que todos os participantes atuais responderem.
+- A competição não altera o progresso individual, medalhas ou histórico de estudo.

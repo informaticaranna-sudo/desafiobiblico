@@ -1,5 +1,5 @@
-const CACHE_NAME = "desafio-biblico-v13";
-const FILES = ["./","./index.html","./app.js","./perguntas.json","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png","./icons/bible-welcome.png"];
+const CACHE_NAME = "desafio-biblico-v17";
+const FILES = ["./","./index.html","./app.js","./competition.js","./supabase-config.js","./perguntas.json","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png","./icons/bible-welcome.png"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(FILES))));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k))))));
 self.addEventListener("fetch",event=>{

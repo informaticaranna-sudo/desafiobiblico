@@ -30,6 +30,7 @@
 .app-top-actions .small-btn{font-size:12px;padding:9px 11px}
 @media(max-width:560px){.welcome-card{padding:25px 20px;border-radius:26px}.welcome-icon{width:58px;height:58px}.welcome-brand h1{font-size:22px}header{align-items:flex-start}.app-top-actions{flex-direction:column}.app-top-actions .small-btn{padding:8px 9px}}
 
+.panel .panel{box-shadow:none;background:#fbfcff;margin-top:16px;padding:16px}.answer#compNotice{margin:12px 0}
 </style>
 </head>
 <body>
@@ -60,7 +61,26 @@
  <p>Estude as 1.001 perguntas com suas referências bíblicas ou participe do desafio com as questões que já têm alternativas preparadas.</p>
  <div class="hero-actions">
   <button class="primary" id="startBtn">Começar desafio ✨</button>
+  <button class="secondary" id="compBtn">🏆 Competir com amigos</button>
   <button class="secondary" id="studyBtn">Estudar perguntas</button>
+ </div>
+</section>
+
+
+<section class="panel hidden" id="competitionPanel">
+ <div class="section-title"><h3>🏆 Competição entre amigos</h3><button class="soft" id="compBackHome">Voltar</button></div>
+ <p class="hint">Crie uma sala privada para até 10 participantes (você + 9 amigos). Todos recebem as mesmas 10 perguntas. Entre com seu apelido, sem cadastro ou senha.</p>
+ <div id="compNotice" class="answer">Escolha como deseja competir.</div>
+ <div class="row"><button class="action" id="compCreateAsync">Criar desafio por turnos</button><button class="action" id="compCreateLive">Criar batalha ao vivo</button></div>
+ <p class="note">Por turnos: cada pessoa responde no próprio horário. Ao vivo: todos respondem à mesma pergunta; o organizador avança quando todos concluírem.</p>
+ <div class="row" style="margin-top:12px"><input class="field" id="compJoinCode" maxlength="6" placeholder="Código da sala (6 caracteres)"><button class="soft" id="compJoinBtn">Entrar na sala</button></div>
+ <div class="panel hidden" id="compLobby">
+  <h3>Sua sala: <span id="compInviteCode">------</span></h3>
+  <p class="hint"><span id="compRoomMode"></span> • <span id="compRoomStatus"></span></p>
+  <input class="field" id="compInviteUrl" readonly aria-label="Link de convite">
+  <div class="row"><button class="soft" id="compShareBtn">Compartilhar convite</button><button class="action hidden" id="compStartLive">Iniciar batalha</button><button class="action hidden" id="compPlayNow">Responder perguntas</button><button class="soft hidden" id="compAdvanceLive">Avançar pergunta</button></div>
+  <p class="note" id="compLiveProgress"></p><h3>Placar</h3><div class="list" id="compPlayers"></div>
+  <p class="feedback good hidden" id="compFinished">Competição encerrada! Resultado final acima.</p>
  </div>
 </section>
 
@@ -110,6 +130,9 @@
 <footer>Desafio Bíblico • Perguntas baseadas no PDF enviado. Referências abertas na Bíblia ARC.</footer>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
 <script src="./app.js"></script>
+<script src="./competition.js"></script>
 </body>
 </html>
