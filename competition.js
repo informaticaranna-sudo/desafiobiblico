@@ -18,7 +18,7 @@ function compStoreSession(code,token,playerId){localStorage.setItem(COMP_TOKEN_K
 async function compCreate(mode){
  try{
   const nickname=compNick(); if(!nickname) throw new Error('Entre no aplicativo com seu apelido antes de criar a competição.');
-  const ready=questions.filter(q=>q.reviewStatus==='aprovada'&&q.options?.length===3&&q.options.filter(o=>o.correct).length===1);
+  const ready=questions.filter(q=>!q.level&&q.reviewStatus==='aprovada'&&q.options?.length===3&&q.options.filter(o=>o.correct).length===1);
   if(ready.length<10) throw new Error('Ainda não existem 10 perguntas aprovadas com três alternativas e um gabarito.');
   const picked=shuffle(ready).slice(0,10).map(q=>({id:q.id,question:q.question,answer:q.answer,options:q.options.map(o=>({text:o.text,correct:!!o.correct}))}));
   const token=compToken(); const result=await compRpc('create_competition',{p_nickname:nickname,p_mode:mode,p_questions:picked,p_token:token});

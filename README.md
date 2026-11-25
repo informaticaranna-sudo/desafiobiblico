@@ -119,3 +119,14 @@ Sem configurar o Supabase, o modo individual continua funcionando normalmente, m
 - O placar atualiza automaticamente por consulta periódica ao servidor.
 - A batalha ao vivo é sincronizada por pergunta; o organizador libera a próxima depois que todos os participantes atuais responderem.
 - A competição não altera o progresso individual, medalhas ou histórico de estudo.
+
+
+## Atualização v18 — perguntas fáceis e Desafio Kids
+
+- Foram adicionadas 199 perguntas do material “250 Perguntas — Quiz Bíblico” (ids 1002 a 1200), todas com `level: "facil"`, três alternativas e um gabarito.
+- 64 delas foram marcadas com `kids5: true` e alimentam o botão **Desafio Kids (até 5 anos)**, em rodadas de 10 perguntas. Um adulto pode ler as perguntas em voz alta.
+- As demais perguntas fáceis ficam disponíveis em **Estudar perguntas → Fáceis e Kids (novas)**.
+- O Desafio principal e a competição entre amigos continuam usando apenas as 1.001 perguntas originais. As medalhas também contam só as originais.
+- As alternativas do PDF tinham 4 opções; foi removida uma alternativa errada de cada pergunta para ficar com 3. As perguntas Kids têm referência bíblica; as outras podem receber referência depois (campo `answer`).
+- Para mudar uma pergunta de grupo, edite `kids5` em `perguntas.json` (`true` entra no Desafio Kids).
+- Não foram importadas 51 do PDF: repetidas, com só 2 alternativas, sem gabarito, já existentes no acervo ou com gabarito duvidoso.

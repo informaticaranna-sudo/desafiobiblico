@@ -1,0 +1,53 @@
+Perguntas do PDF 250 Quiz Bíblico que NÃO foram importadas (número no PDF — motivo):
+
+19 — pergunta opinativa
+20 — gabarito duvidoso (menor versículo)
+29 — a Bíblia não informa a idade
+64 — tema doutrinário controverso
+65 — a Bíblia não diz quantos magos
+67 — gabarito não confere (1 Reis 4:32 fala em 1.005 cânticos)
+100 — ordem de escrita é discutida
+113 — duplicada (repete 97)
+114 — duplicada (repete 98)
+115 — duplicada (repete 99)
+116 — duplicada (repete 100)
+117 — duplicada (repete 101)
+118 — duplicada (repete 102)
+119 — duplicada (repete 103)
+120 — duplicada (repete 104)
+129 — gabarito discutível
+130 — só 2 alternativas (o app exige 3)
+131 — só 2 alternativas (o app exige 3)
+132 — só 2 alternativas (o app exige 3)
+133 — só 2 alternativas (o app exige 3)
+134 — só 2 alternativas (o app exige 3)
+135 — só 2 alternativas (o app exige 3)
+136 — só 2 alternativas (o app exige 3)
+137 — só 2 alternativas (o app exige 3)
+138 — duplicada (repete 137)
+139 — só 2 alternativas (o app exige 3)
+141 — 13 ou 14 cartas é discutido
+142 — duplicada (repete 123)
+143 — duplicada (repete 124)
+144 — duplicada (repete 125)
+145 — duplicada (repete 126)
+146 — duplicada (repete 127)
+174 — gabarito errado (legumes não eram restritos)
+182 — ambígua (Herodias ou a filha)
+201 — Caio/Gaio é mencionado na Bíblia
+212 — já existe no acervo (#1)
+213 — gabarito duvidoso (primeiro suicídio)
+214 — já existe no acervo (#7)
+215 — já existe no acervo (#8)
+216 — gabarito duvidoso
+217 — já existe no acervo (#14)
+218 — já existe no acervo (#17)
+219 — já existe no acervo (#19)
+220 — já existe no acervo (#29)
+221 — já existe no acervo (#32)
+222 — já existe no acervo (#34)
+223 — gabarito discutível
+224 — já existe no acervo (#38)
+225 — já existe no acervo (#44)
+232 — gabarito errado (Daniel/cova de leões)
+237 — sem gabarito no PDF
