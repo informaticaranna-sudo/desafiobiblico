@@ -82,7 +82,9 @@
   <div class="row"><button class="soft" id="compShareBtn">Compartilhar convite</button><button class="action hidden" id="compStartLive">Iniciar batalha</button><button class="action hidden" id="compPlayNow">Responder perguntas</button><button class="soft hidden" id="compAdvanceLive">Avançar pergunta</button></div>
   <p class="note" id="compLiveProgress"></p><h3>Placar</h3><div class="list" id="compPlayers"></div>
   <p class="feedback good hidden" id="compFinished">Competição encerrada! Resultado final acima.</p>
+  <div class="answer hidden" id="compWinner" style="margin-top:10px;font-weight:700"></div>
  </div>
+ <div class="panel" id="compHistoryPanel" style="margin-top:14px"><h3>👑 Meus campeonatos</h3><p class="note" id="compMedalLine"></p><div class="list" id="compHistory"></div></div>
 </section>
 
 <div class="stats">
@@ -90,7 +92,7 @@
  <div class="stat"><strong id="scoreCount">0</strong><span>Acertos registrados</span></div>
  <div class="stat"><strong id="seenCount">0</strong><span>Já estudadas</span></div>
 </div>
-<section class="panel" id="medalsPanel"><h3>🏅 Medalhas do participante</h3><p class="hint" id="medalStatus">Ainda não conquistada</p><p class="note" id="medalProgress">0 de 1.001 respondidas • 0% de acertos</p><p class="note">🥉 Bronze: 1/3 das perguntas respondidas • 🥈 Prata: 50% respondidas • 🥇 Ouro: 1.001 respondidas e mais de 80% de acertos.</p></section>
+<section class="panel" id="medalsPanel"><h3>🏅 Medalhas do participante</h3><p class="hint" id="medalStatus">Ainda não conquistada</p><p class="note" id="medalProgress">0 de 1.001 respondidas • 0% de acertos</p><p class="note">🥉 Bronze: 1/3 das perguntas respondidas • 🥈 Prata: 50% respondidas • 🥇 Ouro: 1.001 respondidas e mais de 80% de acertos.</p><p class="note" id="champLine">👑 Campeonatos: ainda sem vitórias. Vença uma batalha ou um desafio entre amigos!</p></section>
 
 <section class="panel hidden" id="gamePanel">
  <div class="question-top"><span id="modeLabel">DESAFIO</span><span id="counter">Pergunta 1 de 10</span></div>

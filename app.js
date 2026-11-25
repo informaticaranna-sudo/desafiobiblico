@@ -13,7 +13,7 @@ function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.fl
 function hidePanels(){['gamePanel','studyPanel','singlePanel'].forEach(id=>$(id).classList.add('hidden'))}
 function nextChallengeRound(){
  const valid=q=>q.reviewStatus==='aprovada'&&q.options?.length===3&&q.options.filter(o=>o.correct).length===1;
- const ready=questions.filter(q=>valid(q)&&(mode==='kids'?q.kids5===true:!q.level));
+ const ready=questions.filter(q=>valid(q)&&(mode==='kids'?q.kids5===true:q.kids5!==true));
  if(!ready.length){alert('Ainda não há perguntas preparadas para o desafio.');return}
  let remaining=ready.filter(q=>!challengeUsedIds.includes(q.id));
  if(!remaining.length){challengeUsedIds=[];remaining=[...ready];}

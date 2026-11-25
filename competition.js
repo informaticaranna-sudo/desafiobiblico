@@ -18,7 +18,7 @@ function compStoreSession(code,token,playerId){localStorage.setItem(COMP_TOKEN_K
 async function compCreate(mode){
  try{
   const nickname=compNick(); if(!nickname) throw new Error('Entre no aplicativo com seu apelido antes de criar a competição.');
-  const ready=questions.filter(q=>!q.level&&q.reviewStatus==='aprovada'&&q.options?.length===3&&q.options.filter(o=>o.correct).length===1);
+  const ready=questions.filter(q=>q.kids5!==true&&q.reviewStatus==='aprovada'&&q.options?.length===3&&q.options.filter(o=>o.correct).length===1);
   if(ready.length<10) throw new Error('Ainda não existem 10 perguntas aprovadas com três alternativas e um gabarito.');
   const picked=shuffle(ready).slice(0,10).map(q=>({id:q.id,question:q.question,answer:q.answer,options:q.options.map(o=>({text:o.text,correct:!!o.correct}))}));
   const token=compToken(); const result=await compRpc('create_competition',{p_nickname:nickname,p_mode:mode,p_questions:picked,p_token:token});
@@ -38,12 +38,13 @@ async function compShare(){if(!competitionSession)return;const url=$('compInvite
 function compRenderState(s){
  competitionState=s; $('compInviteCode').textContent=s.code; $('compRoomMode').textContent=s.mode==='live'?'Batalha ao vivo':'Cada um no seu horário';
  $('compRoomStatus').textContent=s.status==='waiting'?'Aguardando o início':s.status==='active'?'Competição em andamento':'Competição encerrada';
- $('compPlayers').innerHTML=''; (s.players||[]).forEach((p,i)=>{const el=document.createElement('div');el.className='item';const a=document.createElement('span');a.textContent=`${i+1}. ${p.nickname}${p.id===s.player_id?' (você)':''}`;const b=document.createElement('b');b.textContent=`${p.score} pts`;el.append(a,b);$('compPlayers').append(el)});
+ $('compPlayers').innerHTML=''; (s.players||[]).forEach((p,i)=>{const el=document.createElement('div');el.className='item';const a=document.createElement('span');const done=compComplete(s),rank=1+(s.players||[]).filter(x=>x.score>p.score).length;a.textContent=`${done?(['🥇','🥈','🥉'][rank-1]||rank+'.'):(i+1)+'.'} ${p.nickname}${p.id===s.player_id?' (você)':''}`;const b=document.createElement('b');b.textContent=`${p.score} pts`;el.append(a,b);$('compPlayers').append(el)});
  const qid=s.questions?.[s.current_index]?.id; const done=(s.answers||[]).filter(a=>a.question_id===qid).length; $('compLiveProgress').textContent=s.mode==='live'&&s.status==='active'?`${done} de ${s.players.length} participantes responderam à pergunta ${s.current_index+1} de 10.`:'';
  $('compStartLive').classList.toggle('hidden',!(s.mode==='live'&&s.status==='waiting'&&s.creator_id===s.player_id));
  $('compAdvanceLive').classList.toggle('hidden',!(s.mode==='live'&&s.status==='active'&&s.creator_id===s.player_id));
  $('compPlayNow').classList.toggle('hidden',s.status!=='active');
  $('compFinished').classList.toggle('hidden',s.status!=='finished');
+ compShowWinner(s);
 }
 async function compRefresh(){
  if(!competitionSession)return; try{const s=await compRpc('get_competition_state',{p_code:competitionSession.code,p_token:competitionSession.token});const oldIndex=competitionState?.current_index;compRenderState(s);
@@ -107,3 +108,71 @@ $('compInviteCode').textContent='------';
 const invitedCode=new URLSearchParams(location.search).get('sala');if(invitedCode){$('compJoinCode').value=invitedCode.toUpperCase();}
 // Retoma a sala neste aparelho quando o jogador já entrou anteriormente.
 if(invitedCode){const savedToken=localStorage.getItem(COMP_TOKEN_KEY(invitedCode.toUpperCase()));if(savedToken){competitionSession={code:invitedCode.toUpperCase(),token:savedToken};$('compLobby').classList.remove('hidden');compShow();compRefresh().then(compStartPolling);}}
+
+/* ===== Ranking guardado e medalha de campeão ===== */
+const CHAMP_KEY='desafioBiblicoChampionsV1';
+const champRead=()=>{try{return JSON.parse(localStorage.getItem(CHAMP_KEY))||[]}catch(e){return []}};
+const champWrite=a=>{try{localStorage.setItem(CHAMP_KEY,JSON.stringify(a.slice(-100)))}catch(e){}};
+const sameNick=(a,b)=>String(a||'').trim().toLocaleLowerCase('pt-BR')===String(b||'').trim().toLocaleLowerCase('pt-BR');
+const CHAMP_NAME={live:'👑 Campeão da Batalha',async:'🏆 Campeão do Desafio'};
+// A competição está encerrada quando a batalha foi finalizada ou, no desafio por turnos, quando todos terminaram.
+function compComplete(s){const p=s.players||[];if(p.length<2)return false;return s.mode==='live'?s.status==='finished':p.every(x=>x.finished_at)}
+function compResult(s){
+ const players=[...(s.players||[])].sort((a,b)=>b.score-a.score||b.correct_count-a.correct_count);
+ const top=players.length?players[0].score:0;
+ const winners=top>0?players.filter(p=>p.score===top):[];
+ const me=players.find(p=>p.id===s.player_id);
+ return {code:s.code,mode:s.mode,date:new Date().toISOString(),me:me?me.nickname:'',myScore:me?me.score:0,top,
+  players:players.slice(0,10).map(p=>({n:p.nickname,s:p.score})),winners:winners.map(p=>p.nickname),won:!!me&&winners.some(w=>w.id===me.id)};
+}
+function compShowWinner(s){
+ const box=$('compWinner');if(!box)return;
+ if(!compComplete(s)){box.classList.add('hidden');return}
+ const r=compResult(s);let t;
+ if(!r.winners.length)t='Ninguém pontuou nesta competição.';
+ else if(r.winners.length===1)t=`🏆 Vencedor: ${r.winners[0]} com ${r.top} pontos!`;
+ else t=`🤝 Empate! ${r.winners.join(' e ')} fizeram ${r.top} pontos.`;
+ if(r.won)t+=`\n${CHAMP_NAME[r.mode]} — medalha conquistada! Ela fica guardada neste aparelho.`;
+ box.textContent=t;box.style.whiteSpace='pre-line';box.classList.remove('hidden');
+ compRecordResult(s);
+}
+function compRecordResult(s){
+ if(!compComplete(s))return;
+ const r=compResult(s);if(!r.me)return;
+ const h=champRead();
+ if(h.some(x=>x.code===r.code&&sameNick(x.me,r.me)))return;
+ h.push(r);champWrite(h);renderChamp();
+}
+function renderChamp(){
+ const nick=compNick();
+ const mine=champRead().filter(r=>sameNick(r.me,nick));
+ const wl=mine.filter(r=>r.won&&r.mode==='live').length,wa=mine.filter(r=>r.won&&r.mode==='async').length;
+ const line=mine.length?`👑 Batalhas vencidas: ${wl} • 🏆 Desafios vencidos: ${wa} • Competições disputadas: ${mine.length}`:'👑 Campeonatos: ainda sem vitórias. Vença uma batalha ou um desafio entre amigos!';
+ if($('champLine'))$('champLine').textContent=line;
+ if($('compMedalLine'))$('compMedalLine').textContent=mine.length?line:'Nenhuma competição encerrada ainda. Quando uma batalha ou desafio terminar, o ranking fica guardado aqui.';
+ const list=$('compHistory');if(!list)return;list.innerHTML='';
+ [...mine].reverse().slice(0,20).forEach(r=>{
+  const pos=1+r.players.filter(p=>p.s>r.myScore).length;
+  const el=document.createElement('div');el.className='item';
+  const a=document.createElement('span');
+  const when=new Date(r.date).toLocaleDateString('pt-BR');
+  const top=r.players.slice(0,3).map((p,i)=>`${['🥇','🥈','🥉'][1+r.players.filter(x=>x.s>p.s).length-1]||''} ${p.n} (${p.s})`).join(' · ');
+  a.textContent=`${when} • ${r.mode==='live'?'Batalha':'Desafio'} ${r.code} — ${top}`;
+  const b=document.createElement('b');b.textContent=`${pos}º lugar${r.won?' 👑':''}`;
+  el.append(a,b);list.append(el);
+ });
+}
+// Resultados de salas encerradas enquanto o aparelho estava fechado também entram no histórico.
+async function compSyncResults(){
+ try{
+  if(!compClient()||!compNick())return;
+  const prefix=COMP_TOKEN_KEY('');const done=new Set(champRead().filter(r=>sameNick(r.me,compNick())).map(r=>r.code));
+  const codes=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(prefix))codes.push(k.slice(prefix.length))}
+  for(const code of codes.filter(c=>!done.has(c)).slice(-15)){
+   try{const s=await compRpc('get_competition_state',{p_code:code,p_token:localStorage.getItem(COMP_TOKEN_KEY(code))});compRecordResult(s)}catch(e){}
+  }
+ }catch(e){}
+}
+$('enterBtn').addEventListener('click',()=>setTimeout(()=>{renderChamp();compSyncResults()},400));
+$('compBtn').addEventListener('click',()=>{renderChamp();compSyncResults()});
+renderChamp();setTimeout(compSyncResults,1500);

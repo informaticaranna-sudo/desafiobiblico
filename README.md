@@ -126,7 +126,16 @@ Sem configurar o Supabase, o modo individual continua funcionando normalmente, m
 - Foram adicionadas 199 perguntas do material “250 Perguntas — Quiz Bíblico” (ids 1002 a 1200), todas com `level: "facil"`, três alternativas e um gabarito.
 - 64 delas foram marcadas com `kids5: true` e alimentam o botão **Desafio Kids (até 5 anos)**, em rodadas de 10 perguntas. Um adulto pode ler as perguntas em voz alta.
 - As demais perguntas fáceis ficam disponíveis em **Estudar perguntas → Fáceis e Kids (novas)**.
-- O Desafio principal e a competição entre amigos continuam usando apenas as 1.001 perguntas originais. As medalhas também contam só as originais.
+- O Desafio principal e a competição entre amigos usam as 1.001 perguntas originais mais as fáceis que não são Kids (`kids5: false`). As perguntas Kids ficam só no Desafio Kids. As medalhas contam só as 1.001 originais.
 - As alternativas do PDF tinham 4 opções; foi removida uma alternativa errada de cada pergunta para ficar com 3. As perguntas Kids têm referência bíblica; as outras podem receber referência depois (campo `answer`).
 - Para mudar uma pergunta de grupo, edite `kids5` em `perguntas.json` (`true` entra no Desafio Kids).
 - Não foram importadas 51 do PDF: repetidas, com só 2 alternativas, sem gabarito, já existentes no acervo ou com gabarito duvidoso.
+
+
+## Atualização v20 — ranking guardado e medalha de campeão
+
+- Quando uma **batalha ao vivo** termina, ou quando **todos** os participantes de um **desafio por turnos** terminam as 10 perguntas, o app mostra o vencedor e o pódio (🥇🥈🥉) no placar.
+- Quem vence ganha uma medalha diferente das de Bronze/Prata/Ouro: **👑 Campeão da Batalha** ou **🏆 Campeão do Desafio**. Em caso de empate na maior pontuação, todos os empatados ganham a medalha. Ninguém ganha com 0 ponto, e é preciso ter pelo menos 2 participantes.
+- O resultado fica guardado **neste aparelho** (no histórico “👑 Meus campeonatos”, dentro de Competir com amigos, e na linha de campeonatos do painel de medalhas). Ao abrir o app, ele também confere as salas em que o aparelho já entrou e registra resultados que terminaram enquanto o app estava fechado.
+- O histórico é separado por apelido e não é apagado por “Reiniciar perguntas”.
+- Não foi preciso alterar o `competition.sql`. Como o histórico fica no aparelho, ele não aparece em outro celular.
